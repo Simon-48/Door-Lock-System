@@ -1,0 +1,239 @@
+C51 COMPILER V9.60.0.0   DOOR_LOCK_SYSTEM                                                  01/09/2021 14:13:40 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DOOR_LOCK_SYSTEM
+OBJECT MODULE PLACED IN .\Objects\Door_Lock_System.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Door_Lock_System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\L
+                    -istings\Door_Lock_System.lst) TABS(2) OBJECT(.\Objects\Door_Lock_System.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include<string.h>
+   3          sbit RS = P3^0;
+   4          sbit EN = P3^1;
+   5          sbit IN1 =P3^2;
+   6          sbit IN2 = P3^3;
+   7          void delay(int a)
+   8          {
+   9   1        int i,j;
+  10   1        for(i=0;i<a;i++)
+  11   1        for(j=0;j<255;j++);
+  12   1      }
+  13          void cmd(char cm)
+  14          {
+  15   1        P2 = cm;
+  16   1        RS = 0;
+  17   1        EN = 1;
+  18   1        delay(1);
+  19   1        EN = 0;
+  20   1      }
+  21          void dat(char dt)
+  22          {
+  23   1        P2 = dt;
+  24   1        RS = 1;
+  25   1        EN = 1;
+  26   1        delay(1);
+  27   1        EN = 0;
+  28   1      }
+  29          
+  30          void display(char *lcd)
+  31          {
+  32   1        while(*lcd != '\0')
+  33   1        {
+  34   2          dat(*lcd);
+  35   2          lcd++;
+  36   2        }
+  37   1      }
+  38          void lcdint()
+  39          {
+  40   1        cmd(0x01);
+  41   1        cmd(0x38);
+  42   1        cmd(0x0E);
+  43   1        cmd(0x80);
+  44   1        
+  45   1      }
+  46          
+  47          void main()
+  48          {
+  49   1        char pass[5] = "1234";
+  50   1        char pass2[5];
+  51   1        int i=0;
+  52   1        char *ptr;
+  53   1        ptr = pass2;
+  54   1        lcdint();
+C51 COMPILER V9.60.0.0   DOOR_LOCK_SYSTEM                                                  01/09/2021 14:13:40 PAGE 2   
+
+  55   1        display("Password-");
+  56   1        pass2[4]='\0';
+  57   1          
+  58   1          while(1)
+  59   1          {
+  60   2          while(i<4)
+  61   2        {
+  62   3          P1=0xFE;
+  63   3          if(P1==0xEE)
+  64   3          {
+  65   4            *(ptr+i)='7';
+  66   4            dat('*');
+  67   4            delay(200);
+  68   4            cmd(0x06);
+  69   4            
+  70   4            i++;
+  71   4            
+  72   4          }
+  73   3          else if(P1==0xDE)
+  74   3          {
+  75   4            *(ptr+i)='8';
+  76   4            dat('*');
+  77   4            delay(200);
+  78   4            cmd(0x06);
+  79   4            
+  80   4            i++;
+  81   4            
+  82   4          }
+  83   3          else if(P1==0xBE)
+  84   3          {
+  85   4            *(ptr+i)='9';
+  86   4            dat('*');
+  87   4            delay(200);
+  88   4            cmd(0x06);
+  89   4            
+  90   4            i++;
+  91   4          }
+  92   3        
+  93   3          P1=0xFD;
+  94   3          if(P1==0xED)
+  95   3          {
+  96   4            *(ptr+i)='4';
+  97   4            dat('*');
+  98   4            delay(200);
+  99   4            cmd(0x06);
+ 100   4            
+ 101   4            i++;
+ 102   4          }
+ 103   3          else if(P1==0xDD)
+ 104   3          {
+ 105   4            *(ptr+i)='5';
+ 106   4            dat('*');
+ 107   4            delay(200);
+ 108   4            cmd(0x06);
+ 109   4            
+ 110   4            i++;
+ 111   4          }
+ 112   3          else if(P1==0xBD)
+ 113   3          {
+ 114   4            *(ptr+i)='6';
+ 115   4            dat('*');
+ 116   4            delay(200);
+C51 COMPILER V9.60.0.0   DOOR_LOCK_SYSTEM                                                  01/09/2021 14:13:40 PAGE 3   
+
+ 117   4            cmd(0x06);
+ 118   4            
+ 119   4            i++;
+ 120   4          }
+ 121   3      
+ 122   3        
+ 123   3        
+ 124   3          P1=0xFB;
+ 125   3          if(P1==0xEB)
+ 126   3          {
+ 127   4            *(ptr+i)='1';
+ 128   4            dat('*');
+ 129   4            delay(200);
+ 130   4            cmd(0x06);
+ 131   4            
+ 132   4            i++;
+ 133   4          }
+ 134   3          else if(P1==0xDB)
+ 135   3          {
+ 136   4            *(ptr+i)='2';
+ 137   4            dat('*');
+ 138   4            delay(200);
+ 139   4            cmd(0x06);
+ 140   4            
+ 141   4            i++;
+ 142   4          }
+ 143   3          else if(P1==0xBB)
+ 144   3          {
+ 145   4            *(ptr+i)='3';
+ 146   4            dat('*');
+ 147   4            delay(200);
+ 148   4            cmd(0x06);
+ 149   4            
+ 150   4            i++;
+ 151   4          }
+ 152   3      
+ 153   3        
+ 154   3        
+ 155   3        
+ 156   3          P1=0xF7;
+ 157   3          if(P1==0xE7)
+ 158   3          {
+ 159   4            *(ptr+i)='*';
+ 160   4            dat('*');
+ 161   4            delay(200);
+ 162   4            cmd(0x06);
+ 163   4            
+ 164   4            i++;
+ 165   4            
+ 166   4          }
+ 167   3          else if(P1==0xD7)
+ 168   3          {
+ 169   4            *(ptr+i)='0';
+ 170   4            dat('*');
+ 171   4            delay(200);
+ 172   4            cmd(0x06);
+ 173   4            
+ 174   4            i++;
+ 175   4          }
+ 176   3          else if(P1==0xB7)
+ 177   3          {
+ 178   4            *(ptr+i)='#';
+C51 COMPILER V9.60.0.0   DOOR_LOCK_SYSTEM                                                  01/09/2021 14:13:40 PAGE 4   
+
+ 179   4            dat('*');
+ 180   4            delay(200);
+ 181   4            cmd(0x06);
+ 182   4            
+ 183   4            i++;
+ 184   4          }
+ 185   3          
+ 186   3        }
+ 187   2      
+ 188   2      while(i==4)
+ 189   2      {
+ 190   3      
+ 191   3      if ((strcmp(pass, pass2)) == 0)
+ 192   3      {
+ 193   4        cmd(0xC0);
+ 194   4        display("Correct");
+ 195   4        IN1 = 1;
+ 196   4        IN2 = 0;
+ 197   4        delay(100); 
+ 198   4      }
+ 199   3      else
+ 200   3      {
+ 201   4        cmd(0xC0);
+ 202   4        display("Incorrect");
+ 203   4        IN1 = 0;
+ 204   4        IN2 = 0;
+ 205   4        delay(100);
+ 206   4      }
+ 207   3      }
+ 208   2      }
+ 209   1        }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    703    ----
+   CONSTANT SIZE    =     33    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      18
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
