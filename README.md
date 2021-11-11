@@ -1,4 +1,4 @@
-# Door-Lock-System
+# DOOR LOCK SYSTEM USING 8051 MICROCONTROLLER
 
 First load the hex file from CSE331_Project\CODE\Objects in the 8051 microcontroller.
 
